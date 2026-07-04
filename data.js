@@ -173,6 +173,32 @@ const STOPS = [
 
 const BONUS = [
   {
+    id: "watkinsglen", pick: "ethan",
+    name: "Watkins Glen State Park",
+    place: "Watkins Glen, NY · Finger Lakes",
+    coords: [-76.8710, 42.3760], routeIdx: 270,
+    tag: "19 waterfalls in 2 miles — pair it with Taughannock, same day",
+    pics: [
+      {f:"media/online/watkins-2.jpg", credit:"Rainbow Falls — Wikimedia Commons · CC BY 2.0"},
+      {f:"media/online/watkins-1.jpg", credit:"Wikimedia Commons · CC BY-SA 4.0"},
+    ],
+    desc: "Thirty minutes from Taughannock on the other side of Seneca Lake, and it might be the most gorgeous two miles in the East: the Gorge Trail ducks under waterfalls, over stone bridges, and up spray-slicked staircases carved in the 1930s, past 19 falls stacked one after another. You literally walk behind Rainbow Falls. Do Taughannock and this back-to-back on day one and the trip opens with a knockout.",
+    tips: ["Go at opening (usually 9am) or after 4pm — midday in July is shoulder-to-shoulder.", "Walk UP the gorge from the main (lower) entrance so the views unfold in front of you — 832 stone steps, take your time.", "The stone is always wet — grippy shoes, and keep phones zipped up under the falls."],
+  },
+  {
+    id: "indianhead", pick: "ethan",
+    name: "Indian Head Overlook",
+    place: "St. Huberts (Keene Valley), NY · Adirondacks",
+    coords: [-73.7885, 44.0873], routeIdx: 949,
+    tag: "The ledge over Lower Ausable Lake — the Adirondacks' best view",
+    pics: [
+      {f:"media/online/indianhead-1.jpg", credit:"Flickr · CC BY"},
+      {f:"media/online/indianhead-2.jpg", credit:"Lower Ausable Lake from the ledge — Flickr · CC BY-SA"},
+    ],
+    desc: "A bare granite ledge hanging a thousand feet over Lower Ausable Lake, with the fjord-like valley running to the horizon — the photo that makes people move to the Adirondacks. It's a 10–11 mile round trip, but most of it is a flat walk up the private Lake Road; the real climbing is packed into the last stretch. Fifteen minutes from Split Rock Falls, so a big-hike day pairs naturally with a swim after.",
+    tips: ["IMPORTANT: access is through the Adirondack Mountain Reserve (AMR) and May–Oct requires a FREE timed parking reservation from hikeamr.org — book it when you book Cadillac.", "No dogs, no bikes on AMR land — their rules, firmly enforced.", "Start early (gate-side lot fills), bring more water than you think, and eat lunch on the ledge."],
+  },
+  {
     id: "franconia", pick: "ethan",
     name: "Franconia Notch Trifecta",
     place: "Lincoln, NH · White Mountains",
@@ -221,6 +247,31 @@ const BONUS = [
     desc: "You loved a drive-up summit in the Adirondacks; here's its coastal twin, right on your Route 1 run to Acadia. A short toll road (or a steep 1-mile hike) tops out over Camden's harbor and the full sweep of Penobscot Bay — climb the stone tower for the 360. Camden below is the prettiest harbor town on the route and a perfect leg-stretch.",
     tips: ["Small state-park fee; the tower view beats the parking-lot view — walk the last 100 yards.", "Pair it with a stroll down to Camden's waterfront 5 minutes away."],
   },
+  {
+    id: "beehive", pick: "ethan",
+    name: "The Beehive Trail",
+    place: "Sand Beach, Acadia National Park, ME",
+    coords: [-68.1851, 44.3240], routeIdx: 2287,
+    tag: "Acadia's famous iron-rung climb — and the spine of your perfect day",
+    pics: [
+      {f:"media/online/beehive-rungs.jpg", credit:"Wikimedia Commons · CC BY 2.0"},
+      {f:"media/online/beehive-1.jpg", credit:"Wikimedia Commons · CC BY 2.0"},
+    ],
+    desc: "A 450-foot granite dome climbed via iron rungs and ladders bolted into the cliff face, with Sand Beach glowing below the whole way up. It's short (about 1.5 miles), thrilling, and the single most memorable hike in the park. THE PERFECT ACADIA DAY: Cadillac for sunrise → Beehive by 8am while it's cool and quiet → swim it off at Sand Beach right below → Thunder Hole on the rising tide → lobster roll at the Pound → Jordan Pond loop with popovers → Bar Island at evening low tide. That's the whole park in one unforgettable day.",
+    tips: ["One-way UP only — you descend the gentle Bowl Trail around the back. Never climb down the rungs.", "Skip it if it's wet or if either of you is genuinely afraid of heights (the exposure is real); the Bowl Trail still gets you the summit.", "Park at the Sand Beach lot early or take the free Island Explorer shuttle."],
+  },
+  {
+    id: "ravensnest", pick: "ethan",
+    name: "Raven's Nest",
+    place: "Schoodic Peninsula, Acadia · Winter Harbor, ME",
+    coords: [-68.0846, 44.3437], routeIdx: 2287,
+    tag: "Acadia's secret cliffs — no crowds, all drama",
+    pics: [
+      {f:"media/online/ravensnest-1.jpg", credit:"Wikimedia Commons · CC BY 4.0"},
+    ],
+    desc: "The Schoodic Peninsula is the Acadia most visitors never see — same pink granite, a fraction of the people — and Raven's Nest is its show-stopper: sheer cliffs dropping into a churning cove, waves detonating against the rock below your feet. It's an unmarked viewpoint off the one-way Schoodic Loop Road, which is exactly why it stays quiet. Worth the drive around Frenchman Bay (about 1 hr 10 from Bar Harbor) on a day the island feels busy.",
+    tips: ["Unmarked but easy: on the loop road ~1 mile past Frazer Point, look for the small pull-offs and the short path west to the cliffs.", "No railings at all — keep well back from the edge, especially in wind or spray.", "Make a half-day of it: Schoodic Point, Blueberry Hill, and the loop road are all right there."],
+  },
 ];
 
 const EATS = [
@@ -236,7 +287,10 @@ const EATS = [
     name: "Jordan Pond House", place: "Park Loop Rd, Acadia",
     coords: [-68.2528, 44.3223],
     badge: "The experience",
-    pics: [{f:"media/online/jordanpond-bubbles.jpg", credit:"The popover lawn, Jordan Pond &amp; the Bubbles — NARA · Public domain"}],
+    pics: [
+      {f:"media/online/jph-popovers.jpg", credit:"The popovers themselves — Flickr · CC BY-NC-ND"},
+      {f:"media/online/jordanpond-bubbles.jpg", credit:"The popover lawn, Jordan Pond &amp; the Bubbles — NARA · Public domain"},
+    ],
     desc: "Popovers and strawberry jam on a lawn overlooking Jordan Pond and the Bubbles — an Acadia tradition since the 1890s and the only restaurant inside the park. Earn it first with the flat 3.3-mile pond loop, one of the prettiest easy walks in Maine.",
   },
   {

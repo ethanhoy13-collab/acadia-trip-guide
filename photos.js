@@ -17,10 +17,10 @@ const PHOTOS = {
     "IMG_4309.jpg","IMG_4312.jpg","IMG_4306.mp4","IMG_4307.mp4","IMG_1265.jpg","IMG_1269.mp4","IMG_1271.mp4"
   ]},
   "04-whiteface-mountain": { files: [
-    "IMG_4336.mp4","IMG_4340.jpg","IMG_4357.jpg","IMG_4373.jpg","IMG_4374.jpg","IMG_4381.jpg"
+    "IMG_4381.jpg","IMG_4336.mp4","IMG_4340.jpg","IMG_4357.jpg","IMG_4373.jpg","IMG_4374.jpg"
   ]},
   "05-ausable-chasm": { files: [
-    "IMG_4384.jpg","IMG_4385.mp4","IMG_4386.jpg","IMG_4387.mp4","IMG_4389.jpg"
+    "IMG_4389.jpg","IMG_4384.jpg","IMG_4385.mp4","IMG_4386.jpg","IMG_4387.mp4"
   ]},
   "06-cadillac-mountain": { files: [
     "IMG_4409.jpg","IMG_4421.mp4","IMG_4430.jpg"
@@ -32,9 +32,9 @@ const PHOTOS = {
     "IMG_4500.jpg","IMG_4504.mp4","IMG_4523.mp4"
   ]},
   "09-bar-harbor-lobster-pound": { files: [
-    "IMG_4534.mp4","IMG_4535.jpg","IMG_4536.jpg","IMG_4540.jpg","IMG_4542.jpg"
+    "IMG_4540.jpg","IMG_4534.mp4","IMG_4535.jpg","IMG_4536.jpg","IMG_4542.jpg"
   ]},
   "10-bar-island": { files: [
-    "IMG_4549.mp4","IMG_4550.jpg","IMG_4551.mp4","IMG_4552.jpg","IMG_4553.jpg","IMG_4557.mp4"
+    "IMG_4550.jpg","IMG_4549.mp4","IMG_4551.mp4","IMG_4552.jpg","IMG_4553.jpg","IMG_4557.mp4"
   ]},
 };
