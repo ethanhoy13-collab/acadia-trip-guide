@@ -189,9 +189,10 @@ nav.scrolled{border-bottom-color:var(--line)}
 .bcard .tips{list-style:none;display:flex;flex-direction:column;gap:8px}
 .bcard .tips li{font-size:12.5px;color:var(--mute);padding-left:20px;position:relative}
 .bcard .tips li::before{content:"→";position:absolute;left:0;color:var(--teal)}
-.cardmedia{border-radius:12px;overflow:hidden;aspect-ratio:16/10;background:var(--ink3);margin:2px 0 2px}
-.cardmedia img{width:100%;height:100%;object-fit:cover;display:block}
+.cardmedia{border-radius:12px;overflow:hidden;background:var(--ink3);margin:2px 0 2px}
+.cardmedia img{width:100%;height:235px;object-fit:cover;display:block}
 .cardmedia.two{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+@supports not (aspect-ratio:4/3){.carousel .frame{height:340px;position:relative}}
 .pcredit{font-size:10px;color:var(--mute);letter-spacing:.02em;margin-bottom:4px}
 .panelpic{border-radius:12px;overflow:hidden;margin:0 0 4px;background:var(--ink3)}
 .panelpic img{width:100%;display:block}

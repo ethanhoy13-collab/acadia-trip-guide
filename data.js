@@ -230,9 +230,11 @@ const BONUS = [
     place: "Stone House Trail, Stow, ME · Evans Notch",
     coords: [-70.9840, 44.2455], routeIdx: 1726,
     tag: "The emerald pool from the videos — it's real",
-    pics: [],
+    pics: [
+      {f:"media/online/rattlesnake-1.jpg", credit:"Frame from the scouting video that put it on the list"},
+    ],
     desc: "An 18-foot-deep, impossibly green pool below a small cascade, tucked a mile up an easy trail in Evans Notch (that 'paradise in New Hampshire' video is actually just over the Maine line). 2.5 miles round trip, mostly flat. It sits on private land the owners generously keep open — treat it accordingly.",
-    tips: ["From Rt 113 take Stone House Rd, park at the gate on Shell Pond Rd, walk in.", "No cell service in Evans Notch — download offline maps first.", "No usable licensed photo exists of this one — see <a href='https://www.alltrails.com/trail/us/maine/rattlesnake-pool' target='_blank' rel='noopener'>photos on AllTrails</a>. It looks fake. It isn't.", "Pack out everything; this stays open only because people behave."],
+    tips: ["From Rt 113 take Stone House Rd, park at the gate on Shell Pond Rd, walk in.", "No cell service in Evans Notch — download offline maps first.", "More photos on <a href='https://www.alltrails.com/trail/us/maine/rattlesnake-pool' target='_blank' rel='noopener'>AllTrails</a>. It looks fake. It isn't.","Pack out everything; this stays open only because people behave."],
   },
   {
     id: "mtbattie", pick: "guide",
