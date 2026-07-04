@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Long Way to Acadia — Built for Christian &amp; Grace</title>
+<meta name="description" content="1,000 miles of waterfalls, summits, swimming holes and lobster rolls — Williamsport, PA to Acadia National Park, road-tested by Ethan for Christian & Grace Good.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<style>
+:root{
+  --ink:#0e1a17;--ink2:#13231f;--ink3:#1a2f2a;
+  --cream:#f4efe6;--cream-dim:#cfc8ba;--mute:#8fa39b;
+  --amber:#e8a24a;--amber-hi:#f5bc6e;--teal:#5fb3a3;--rose:#e07856;
+  --line:rgba(244,239,230,.12);
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --r:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--cream);font-family:Inter,system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif}
+a{color:var(--amber);text-decoration:none}
+img{display:block;max-width:100%}
+section{position:relative;scroll-margin-top:64px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.kicker{font:600 12px/1 Inter;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.h2{font-size:clamp(30px,4.5vw,52px);font-weight:700;letter-spacing:-.01em;line-height:1.08;margin-bottom:14px}
+.lede{color:var(--cream-dim);font-size:clamp(15px,1.6vw,18px);max-width:680px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- nav ---------- */
+nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;background:linear-gradient(rgba(14,26,23,.92),rgba(14,26,23,.75));backdrop-filter:blur(12px);
+  border-bottom:1px solid transparent;transition:border-color .3s}
+nav.scrolled{border-bottom-color:var(--line)}
+.brand{font-family:Fraunces,serif;font-weight:700;font-size:17px;color:var(--cream)}
+.brand em{color:var(--amber);font-style:normal}
+.navlinks{display:flex;gap:26px;font-size:13.5px;font-weight:500}
+.navlinks a{color:var(--cream-dim);transition:color .2s}
+.navlinks a:hover{color:var(--amber)}
+@media(max-width:720px){.navlinks{display:none}}
+
+/* ---------- hero ---------- */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  padding:110px 24px 70px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg svg{width:100%;height:100%}
+.hero-bg::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(rgba(14,26,23,.5),rgba(14,26,23,.55) 55%,var(--ink) 100%),
+  radial-gradient(ellipse 90% 60% at 50% 42%,transparent 30%,rgba(14,26,23,.55) 80%)}
+.hero-inner{position:relative;z-index:2;max-width:900px}
+.hero .kicker{font-size:13px}
+.hero h1{font-size:clamp(46px,9vw,108px);font-weight:900;line-height:.98;letter-spacing:-.02em;margin:10px 0 22px}
+.hero h1 .accent{color:var(--amber);font-style:italic;font-weight:600}
+.hero .sub{font-size:clamp(16px,2.2vw,21px);color:var(--cream-dim);max-width:640px;margin:0 auto 38px}
+.cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:999px;font:600 15px Inter;cursor:pointer;transition:transform .15s,box-shadow .15s,background .2s;border:none}
+.btn:hover{transform:translateY(-2px)}
+.btn-amber{background:var(--amber);color:#241703;box-shadow:0 8px 30px rgba(232,162,74,.35)}
+.btn-amber:hover{background:var(--amber-hi)}
+.btn-ghost{background:rgba(244,239,230,.07);color:var(--cream);border:1px solid var(--line)}
+.btn-ghost:hover{background:rgba(244,239,230,.13)}
+.scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--mute);font-size:12px;letter-spacing:.18em;text-transform:uppercase;z-index:2;animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+
+/* ---------- stats ---------- */
+.stats{border-block:1px solid var(--line);background:var(--ink2)}
+.stats .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0}
+.stat{padding:30px 18px;text-align:center;border-left:1px solid var(--line)}
+.stat:first-child{border-left:none}
+.stat b{display:block;font-family:Fraunces,serif;font-size:clamp(26px,3.4vw,40px);font-weight:700;color:var(--amber)}
+.stat span{font-size:12.5px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase}
+@media(max-width:720px){.stat{border-left:none;border-top:1px solid var(--line);padding:18px}}
+
+/* ---------- map ---------- */
+#map-section{padding:90px 0 0}
+.map-head{margin-bottom:34px}
+.map-shell{position:relative;height:min(78vh,760px);border-block:1px solid var(--line);overflow:hidden}
+#map{position:absolute;inset:0}
+.map-ui{position:absolute;top:70px;left:16px;z-index:5;display:flex;flex-direction:column;gap:10px;max-width:300px}
+.maplibregl-ctrl-top-right{top:56px!important}
+.map-btn{display:flex;align-items:center;gap:9px;padding:12px 18px;border-radius:12px;border:1px solid var(--line);
+  background:rgba(14,26,23,.86);backdrop-filter:blur(8px);color:var(--cream);font:600 13.5px Inter;cursor:pointer;transition:background .2s}
+.map-btn:hover{background:rgba(26,47,42,.95)}
+.map-btn .dot{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.legend{padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:rgba(14,26,23,.86);backdrop-filter:blur(8px);font-size:12.5px;color:var(--cream-dim);display:flex;flex-direction:column;gap:7px}
+.legend .row{display:flex;align-items:center;gap:9px}
+.lg{width:15px;height:15px;border-radius:50%;flex:none}
+.lg.v{background:var(--amber);border:2px solid #fff3}
+.lg.b{background:transparent;border:2px dashed var(--teal)}
+.lg.e{background:var(--rose);border:2px solid #fff3;border-radius:5px}
+.flychip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);z-index:6;
+  background:rgba(14,26,23,.94);border:1px solid var(--amber);border-radius:14px;padding:13px 22px;text-align:center;
+  transition:transform .4s cubic-bezier(.2,.9,.3,1.2);pointer-events:none;min-width:250px}
+.flychip.show{transform:translateX(-50%) translateY(0)}
+.flychip b{font-family:Fraunces,serif;font-size:17px;color:var(--amber)}
+.flychip span{display:block;font-size:12px;color:var(--mute)}
+
+/* pins */
+.pin{width:30px;height:30px;border-radius:50%;background:var(--amber);color:#241703;display:flex;align-items:center;justify-content:center;
+  font:700 13px Inter;border:2px solid rgba(255,255,255,.55);box-shadow:0 4px 14px rgba(0,0,0,.5);cursor:pointer;transition:transform .15s}
+.pin:hover{transform:scale(1.22)}
+.pin.bonus{background:rgba(14,26,23,.85);color:var(--teal);border:2px dashed var(--teal);font-size:14px}
+.pin.eat{background:var(--rose);color:#2c0e04;border-radius:9px;font-size:14px}
+.pin.start{background:var(--cream);color:var(--ink);font-size:14px}
+.maplibregl-popup-content{background:var(--ink2);color:var(--cream);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-family:Inter;box-shadow:var(--shadow)}
+.maplibregl-popup-tip{border-top-color:var(--ink2)!important;border-bottom-color:var(--ink2)!important}
+.pop b{font-family:Fraunces,serif;font-size:15px}
+.pop span{display:block;font-size:12px;color:var(--mute);margin-top:2px}
+.pop button{margin-top:9px;background:var(--amber);border:none;color:#241703;font:600 12px Inter;padding:7px 14px;border-radius:999px;cursor:pointer}
+
+/* detail panel */
+.panel{position:absolute;top:0;right:0;bottom:0;width:min(430px,92vw);z-index:7;background:rgba(14,26,23,.97);backdrop-filter:blur(14px);
+  border-left:1px solid var(--line);transform:translateX(105%);transition:transform .45s cubic-bezier(.2,.8,.25,1);overflow-y:auto;overscroll-behavior:contain}
+.panel.open{transform:none}
+.panel-close{position:sticky;top:0;z-index:2;display:flex;justify-content:flex-end;padding:12px;background:linear-gradient(rgba(14,26,23,.95),transparent)}
+.panel-close button{background:rgba(244,239,230,.1);border:1px solid var(--line);color:var(--cream);width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer}
+.panel-body{padding:0 26px 40px;margin-top:-22px}
+.panel-body .num{font:700 12px Inter;letter-spacing:.18em;color:var(--amber);text-transform:uppercase}
+.panel-body h3{font-size:29px;font-weight:700;line-height:1.1;margin:7px 0 3px}
+.panel-body .place{font-size:13px;color:var(--mute);margin-bottom:16px}
+.panel-body .tagline{font-family:Fraunces,serif;font-style:italic;font-size:16.5px;color:var(--amber-hi);margin-bottom:14px}
+.panel-body p{font-size:14.5px;color:var(--cream-dim);margin-bottom:16px}
+.panel-body .tips{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.panel-body .tips li{font-size:13.5px;color:var(--cream-dim);padding-left:24px;position:relative}
+.panel-body .tips li::before{content:"→";position:absolute;left:0;color:var(--amber)}
+@media(max-width:720px){.panel{top:auto;height:72%;width:100%;border-left:none;border-top:1px solid var(--line);transform:translateY(105%);border-radius:20px 20px 0 0}.panel.open{transform:none}}
+
+/* ---------- carousel ---------- */
+.carousel{position:relative;border-radius:14px;overflow:hidden;background:var(--ink3);margin-bottom:16px}
+.carousel .frame{aspect-ratio:4/3;position:relative}
+.carousel .frame img,.carousel .frame video,.carousel .frame .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.carousel .frame video{object-fit:contain}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%}
+.carousel .cap{font-size:12px;color:var(--mute);padding:9px 13px;border-top:1px solid var(--line)}
+.carousel .cnav{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(14,26,23,.72);color:var(--cream);font-size:15px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center}
+.carousel .cnav.prev{left:10px}.carousel .cnav.next{right:10px}
+.carousel .dots{position:absolute;bottom:10px;left:0;right:0;display:flex;gap:6px;justify-content:center;z-index:2}
+.carousel .dots i{width:7px;height:7px;border-radius:50%;background:rgba(244,239,230,.4)}
+.carousel .dots i.on{background:var(--amber)}
+.ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--cream-dim);font-size:13px;text-align:center;padding:20px}
+.ph .icon{font-size:44px;filter:saturate(.85)}
+.ph small{color:var(--mute);font-size:11.5px}
+
+/* ---------- itinerary ---------- */
+#stops{padding:110px 0 40px}
+.timeline{position:relative;margin-top:60px}
+.timeline::before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:linear-gradient(var(--amber),var(--teal));opacity:.35}
+.stopcard{position:relative;display:grid;grid-template-columns:minmax(0,470px) 1fr;gap:38px;padding:0 0 84px 76px}
+.stopcard .tick{position:absolute;left:9px;top:6px;width:32px;height:32px;border-radius:50%;background:var(--amber);color:#241703;
+  display:flex;align-items:center;justify-content:center;font:700 14px Inter;border:3px solid var(--ink);box-shadow:0 0 0 2px rgba(232,162,74,.4)}
+.stopcard .media{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.stopcard h3{font-size:clamp(24px,3vw,34px);font-weight:700;line-height:1.08}
+.stopcard .place{font-size:13px;color:var(--mute);margin:5px 0 4px}
+.stopcard .drive{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.06em;color:var(--teal);border:1px solid rgba(95,179,163,.4);border-radius:999px;padding:4px 12px;margin:8px 0 14px}
+.stopcard .tagline{font-family:Fraunces,serif;font-style:italic;font-size:17.5px;color:var(--amber-hi);margin-bottom:12px}
+.stopcard p{color:var(--cream-dim);font-size:15px;margin-bottom:16px}
+.stopcard .tips{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.stopcard .tips li{font-size:13.5px;color:var(--cream-dim);padding-left:24px;position:relative}
+.stopcard .tips li::before{content:"→";position:absolute;left:0;color:var(--amber)}
+.viewmap{background:none;border:1px solid var(--line);color:var(--cream);font:600 12.5px Inter;padding:9px 18px;border-radius:999px;cursor:pointer;transition:border-color .2s,color .2s}
+.viewmap:hover{border-color:var(--amber);color:var(--amber)}
+.starbox{background:linear-gradient(135deg,rgba(95,179,163,.14),rgba(232,162,74,.1));border:1px solid rgba(95,179,163,.4);border-radius:var(--r);padding:22px 24px;margin:6px 0 18px}
+.starbox h4{font-family:Fraunces,serif;font-size:19px;color:var(--teal);margin-bottom:10px}
+.starbox ol{margin-left:18px;display:flex;flex-direction:column;gap:9px}
+.starbox li{font-size:13.5px;color:var(--cream-dim)}
+.starbox li::marker{color:var(--teal);font-weight:700}
+@media(max-width:900px){.stopcard{grid-template-columns:1fr;gap:22px;padding-left:60px}.timeline::before{left:20px}.stopcard .tick{left:5px}}
+
+/* ---------- bonus ---------- */
+#bonus{padding:100px 0;background:var(--ink2);border-block:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(295px,1fr));gap:22px;margin-top:50px}
+.bcard{background:var(--ink);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;gap:11px;transition:transform .2s,border-color .2s}
+.bcard:hover{transform:translateY(-5px);border-color:rgba(95,179,163,.5)}
+.bcard .badge{align-self:flex-start;font:600 10.5px Inter;letter-spacing:.14em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.badge.ethan{color:var(--amber);border:1px solid rgba(232,162,74,.5)}
+.badge.guide{color:var(--teal);border:1px solid rgba(95,179,163,.5)}
+.badge.warn{color:var(--rose);border:1px solid rgba(224,120,86,.55)}
+.bcard h3{font-size:23px;font-weight:700;line-height:1.15}
+.bcard .place{font-size:12.5px;color:var(--mute)}
+.bcard .tagline{font-family:Fraunces,serif;font-style:italic;font-size:15.5px;color:var(--amber-hi)}
+.bcard p{font-size:14px;color:var(--cream-dim);flex:1}
+.bcard .tips{list-style:none;display:flex;flex-direction:column;gap:8px}
+.bcard .tips li{font-size:12.5px;color:var(--mute);padding-left:20px;position:relative}
+.bcard .tips li::before{content:"→";position:absolute;left:0;color:var(--teal)}
+
+/* ---------- eats ---------- */
+#eats{padding:100px 0}
+.eatgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;margin-top:50px}
+.ecard{border:1px solid var(--line);border-radius:var(--r);padding:28px;background:linear-gradient(160deg,var(--ink2),var(--ink));display:flex;flex-direction:column;gap:10px;transition:transform .2s,border-color .2s}
+.ecard:hover{transform:translateY(-5px);border-color:rgba(224,120,86,.5)}
+.ecard .badge{align-self:flex-start;font:600 10.5px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--rose);border:1px solid rgba(224,120,86,.5);padding:5px 12px;border-radius:999px}
+.ecard h3{font-size:22px}
+.ecard .place{font-size:12.5px;color:var(--mute)}
+.ecard p{font-size:14px;color:var(--cream-dim)}
+
+/* ---------- know ---------- */
+#know{padding:100px 0;background:var(--ink2);border-block:1px solid var(--line)}
+.knowgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:50px}
+.kcard{border:1px solid var(--line);border-radius:14px;padding:24px;background:var(--ink)}
+.kcard .icon{font-size:26px;margin-bottom:10px}
+.kcard h4{font-family:Inter;font-size:15px;font-weight:700;margin-bottom:7px}
+.kcard p{font-size:13.5px;color:var(--cream-dim)}
+
+/* ---------- outro ---------- */
+#outro{padding:130px 24px;text-align:center}
+#outro .msg{font-family:Fraunces,serif;font-size:clamp(22px,3.4vw,34px);font-weight:600;font-style:italic;max-width:760px;margin:0 auto 22px;line-height:1.35}
+#outro .sig{font-family:Fraunces,serif;font-size:22px;color:var(--amber)}
+footer{border-top:1px solid var(--line);padding:26px 24px;text-align:center;font-size:12px;color:var(--mute)}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="brand">The Long Way <em>to Acadia</em></div>
+  <div class="navlinks">
+    <a href="#map-section">The Route</a><a href="#stops">The Stops</a><a href="#bonus">Bonus Picks</a><a href="#eats">Where to Eat</a><a href="#know">Know Before You Go</a>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-bg" id="heroBg">
+    <img class="hero-photo" src="media/08-thunder-hole/IMG_4500.jpg" alt="A wave exploding over the railings at Thunder Hole, Acadia">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" style="display:none">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#16302b"/><stop offset=".55" stop-color="#11221e"/><stop offset="1" stop-color="#0e1a17"/>
+        </linearGradient>
+        <radialGradient id="sun" cx=".72" cy=".3" r=".35">
+          <stop offset="0" stop-color="#e8a24a" stop-opacity=".5"/><stop offset="1" stop-color="#e8a24a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="1440" height="900" fill="url(#sky)"/>
+      <rect width="1440" height="900" fill="url(#sun)"/>
+      <g fill="none" stroke="#5fb3a3" stroke-opacity=".1" stroke-width="1.4">
+        <path d="M-40 220 C 260 150 420 300 720 240 S 1220 130 1480 210"/>
+        <path d="M-40 300 C 260 230 430 380 740 315 S 1230 210 1480 290"/>
+        <path d="M-40 385 C 270 315 440 460 750 395 S 1240 295 1480 375"/>
+        <path d="M-40 470 C 280 400 450 545 760 480 S 1250 380 1480 460"/>
+        <path d="M-40 560 C 290 490 460 635 770 570 S 1260 470 1480 550"/>
+        <path d="M-40 650 C 300 580 470 725 780 660 S 1270 560 1480 640"/>
+        <path d="M-40 740 C 310 670 480 815 790 750 S 1280 650 1480 730"/>
+      </g>
+      <g opacity=".9">
+        <path d="M0 705 L200 545 330 660 470 500 640 690 820 520 1000 680 1170 545 1330 655 1440 585 1440 900 0 900Z" fill="#122622"/>
+        <path d="M0 780 L260 640 420 745 610 610 800 770 990 630 1180 760 1360 660 1440 710 1440 900 0 900Z" fill="#0f1f1b"/>
+      </g>
+      <path id="heroRoute" d="M 150 760 C 300 700 260 560 420 585 S 620 480 700 520 890 430 960 465 1120 350 1210 380" fill="none" stroke="#e8a24a" stroke-width="3" stroke-dasharray="7 9" stroke-linecap="round" opacity=".9"/>
+      <circle cx="150" cy="760" r="8" fill="#f4efe6"/>
+      <circle cx="1210" cy="380" r="9" fill="#e8a24a"/>
+      <circle cx="1210" cy="380" r="16" fill="none" stroke="#e8a24a" stroke-opacity=".5">
+        <animate attributeName="r" values="10;22" dur="1.8s" repeatCount="indefinite"/>
+        <animate attributeName="stroke-opacity" values=".6;0" dur="1.8s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div class="kicker">Williamsport, PA → Acadia National Park · Built for Christian &amp; Grace</div>
+    <h1>The Long Way<br><span class="accent">to Acadia</span></h1>
+    <p class="sub">1,000 miles of waterfalls, summits, swimming holes and lobster rolls — every stop road-tested first, so you two just have to drive.</p>
+    <div class="cta-row">
+      <button class="btn btn-amber" onclick="document.getElementById('map-section').scrollIntoView({behavior:'smooth'})">✦ Fly the route</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('stops').scrollIntoView({behavior:'smooth'})">Start at Stop 1 ↓</button>
+    </div>
+  </div>
+  <div class="scrollcue">Scroll</div>
+</header>
+
+<!-- ================= STATS ================= -->
+<div class="stats"><div class="wrap" id="statsRow"></div></div>
+
+<!-- ================= MAP ================= -->
+<section id="map-section">
+  <div class="wrap map-head reveal">
+    <div class="kicker">The Route</div>
+    <h2 class="h2">Every mile, from above</h2>
+    <p class="lede">Satellite view, real terrain, the actual roads. Hit <b style="color:var(--amber)">Fly the route</b> for the full flyover, or click any pin to open that stop's photos and tips. Drag to look around — it's your map now.</p>
+  </div>
+  <div class="map-shell">
+    <div id="map"></div>
+    <div class="map-ui">
+      <button class="map-btn" id="flyBtn"><span class="dot"></span> Fly the route</button>
+      <button class="map-btn" id="resetBtn">⤾ Reset view</button>
+      <div class="legend">
+        <div class="row"><span class="lg v"></span> Road-tested stops (1–10)</div>
+        <div class="row"><span class="lg b"></span> Bonus picks — scouted</div>
+        <div class="row"><span class="lg e"></span> Where to eat</div>
+      </div>
+    </div>
+    <div class="flychip" id="flyChip"><b id="flyName"></b><span id="flyPlace"></span></div>
+    <aside class="panel" id="panel">
+      <div class="panel-close"><button onclick="closePanel()" aria-label="Close">✕</button></div>
+      <div class="panel-body" id="panelBody"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= STOPS ================= -->
+<section id="stops">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">The Stops · Road-Tested</div>
+      <h2 class="h2">Ten stops. Zero guesses.</h2>
+      <p class="lede">Everything below happened. The fish were caught, the wave went over the railing, the lobster roll was eaten. Follow the numbers north.</p>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ================= BONUS ================= -->
+<section id="bonus">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Bonus Picks · Scouted</div>
+      <h2 class="h2">Wasn't there — would bet on it.</h2>
+      <p class="lede">Places pulled from Ethan's research list plus a couple added to match the trip's taste: waterfalls, swims, and drive-up views. Marked with dashed pins on the map.</p>
+    </div>
+    <div class="cards" id="bonusCards"></div>
+  </div>
+</section>
+
+<!-- ================= EATS ================= -->
+<section id="eats">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Where to Eat</div>
+      <h2 class="h2">Eat like it's part of the itinerary.</h2>
+      <p class="lede">Because it is. One is Ethan-certified; the rest are the safest great bets on your exact route.</p>
+    </div>
+    <div class="eatgrid" id="eatCards"></div>
+  </div>
+</section>
+
+<!-- ================= KNOW ================= -->
+<section id="know">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">Know Before You Go</div>
+      <h2 class="h2">The seven things that make or break it</h2>
+    </div>
+    <div class="knowgrid" id="knowGrid"></div>
+  </div>
+</section>
+
+<!-- ================= OUTRO ================= -->
+<section id="outro">
+  <div class="reveal">
+    <p class="msg" id="outroMsg"></p>
+    <p class="sig" id="outroSig"></p>
+  </div>
+</section>
+
+<footer>Built with love (and one very good lobster roll) · Map data © OpenStreetMap · Imagery © Esri, Maxar, Earthstar Geographics · Terrain © Mapzen/AWS</footer>
+
+<script src="route.js"></script>
+<script src="data.js"></script>
+<script src="photos.js"></script>
+<script>
+/* ============================================================
+   Helpers
+============================================================ */
+const $ = s => document.querySelector(s);
+const stopByld = {}; STOPS.forEach(s => stopByld[s.id] = s);
+const PH_ICONS = {taughannock:"🎣",kaaterskill:"💦",splitrock:"🏊",whiteface:"⛰️",ausable:"🏞️",cadillac:"🌅",barharbor:"⚓",thunderhole:"🌊",lobsterpound:"🦞",barisland:"⭐"};
+
+function photoList(key){
+  const m = PHOTOS[key];
+  if(!m || !m.files || !m.files.length) return null;
+  return m.files.map(f=>({src:`media/${key}/${f}`,vid:f.toLowerCase().endsWith(".mp4")}));
+}
+function frameHTML(item,name){
+  if(item.vid) return `<video src="${item.src}" controls muted playsinline loop preload="metadata"></video>`;
+  return `<img src="${item.src}" alt="${name}" loading="lazy">`;
+}
+function placeholderHTML(stop){
+  return `<div class="ph"><span class="icon">${PH_ICONS[stop.id]||"📷"}</span>
+    <span>${stop.name}</span><small>Ethan's photos landing here soon</small></div>`;
+}
+
+/* ---------- carousel ---------- */
+function carouselHTML(stop, idPrefix){
+  const pics = photoList(stop.photosKey);
+  if(!pics){
+    return `<div class="carousel"><div class="frame">${placeholderHTML(stop)}</div></div>`;
+  }
+  const id = idPrefix + stop.id;
+  const dots = pics.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join("");
+  return `<div class="carousel" id="${id}" data-i="0" data-name="${stop.name}" data-key="${stop.photosKey}">
+    <div class="frame">${frameHTML(pics[0],stop.name)}
+    ${pics.length>1?`<button class="cnav prev" onclick="slide('${id}',-1)">‹</button><button class="cnav next" onclick="slide('${id}',1)">›</button><div class="dots">${dots}</div>`:""}</div>
+    <div class="cap">${stop.name} — ${pics[0].vid?"video":"photo"} 1 of ${pics.length}</div></div>`;
+}
+function slide(id,dir){
+  const el = document.getElementById(id);
+  const pics = photoList(el.dataset.key); if(!pics) return;
+  let i = (parseInt(el.dataset.i)+dir+pics.length)%pics.length;
+  el.dataset.i = i;
+  const old = el.querySelector(".frame video"); if(old) old.pause();
+  const media = el.querySelector(".frame img, .frame video");
+  media.outerHTML = frameHTML(pics[i], el.dataset.name);
+  el.querySelector(".cap").textContent = `${el.dataset.name} — ${pics[i].vid?"video":"photo"} ${i+1} of ${pics.length}`;
+  el.querySelectorAll(".dots i").forEach((d,k)=>d.classList.toggle("on",k===i));
+}
+
+/* ============================================================
+   Build page sections
+============================================================ */
+// stats
+$("#statsRow").innerHTML = `
+  <div class="stat"><b>${ROUTE_MILES.toLocaleString()}</b><span>miles, the good way</span></div>
+  <div class="stat"><b>${STOPS.length}</b><span>road-tested stops</span></div>
+  <div class="stat"><b>7+</b><span>waterfalls &amp; swims</span></div>
+  <div class="stat"><b>2</b><span>drive-up summits</span></div>
+  <div class="stat"><b>1</b><span>ice cream boat</span></div>`;
+
+// timeline
+$("#timeline").innerHTML = STOPS.map(s=>`
+  <article class="stopcard reveal" id="card-${s.id}">
+    <div class="tick">${s.num}</div>
+    <div class="media">${carouselHTML(s,"tl-")}</div>
+    <div class="body">
+      <h3>${s.name}</h3>
+      <div class="place">${s.place}</div>
+      <span class="drive">🚗 ${s.drive}</span>
+      <div class="tagline">${s.tag}</div>
+      <p>${s.story}</p>
+      ${s.starfishGuide?`<div class="starbox"><h4>⭐ The Starfish Playbook — July edition</h4><ol>${s.starfishGuide.map(t=>`<li>${t}</li>`).join("")}</ol></div>`:""}
+      <ul class="tips">${s.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+      <button class="viewmap" onclick="focusStop('${s.id}')">View on the map ✦</button>
+    </div>
+  </article>`).join("");
+
+// bonus
+$("#bonusCards").innerHTML = BONUS.map(b=>`
+  <div class="bcard reveal">
+    <span class="badge ${b.pick}">${b.pick==="ethan"?"Ethan's pick":"Guide's pick"}</span>
+    ${b.unconfirmed?`<span class="badge warn">Exact spot TBC — ask Ethan</span>`:""}
+    <h3>${b.name}</h3>
+    <div class="place">${b.place}</div>
+    <div class="tagline">${b.tag}</div>
+    <p>${b.desc}</p>
+    <ul class="tips">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul>
+    <button class="viewmap" onclick="focusBonus('${b.id}')">View on the map ✦</button>
+  </div>`).join("");
+
+// eats
+$("#eatCards").innerHTML = EATS.map(e=>`
+  <div class="ecard reveal">
+    <span class="badge">${e.badge}</span>
+    <h3>${e.name}</h3>
+    <div class="place">${e.place}</div>
+    <p>${e.desc}</p>
+    ${e.stopRef?`<button class="viewmap" onclick="focusStop('${e.stopRef}')">See Stop 9 on the map ✦</button>`:""}
+  </div>`).join("");
+
+// know
+$("#knowGrid").innerHTML = KNOW.map(k=>`
+  <div class="kcard reveal"><div class="icon">${k.icon}</div><h4>${k.title}</h4><p>${k.body}</p></div>`).join("");
+
+// outro
+$("#outroMsg").textContent = "“" + OUTRO.message + "”";
+$("#outroSig").textContent = OUTRO.signoff;
+
+/* ============================================================
+   Map
+============================================================ */
+const routeGeo = {type:"Feature",geometry:{type:"LineString",coordinates:ROUTE_COORDS}};
+const map = new maplibregl.Map({
+  container:"map",
+  style:{
+    version:8,
+    sources:{
+      sat:{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"],tileSize:256,maxzoom:19,attribution:"Esri, Maxar, Earthstar Geographics"},
+      ref:{type:"raster",tiles:["https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"],tileSize:256,maxzoom:19},
+      dem:{type:"raster-dem",encoding:"terrarium",tiles:["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],tileSize:256,maxzoom:15}
+    },
+    layers:[
+      {id:"sat",type:"raster",source:"sat"},
+      {id:"ref",type:"raster",source:"ref",paint:{"raster-opacity":0.85}}
+    ],
+    sky:{"sky-color":"#0e1a2b","horizon-color":"#2c4a56","fog-color":"#1a2f2a","sky-horizon-blend":0.6,"horizon-fog-blend":0.55}
+  },
+  center:[-72.6,43.3],zoom:5.6,pitch:0,bearing:0,
+  attributionControl:{compact:true}
+});
+map.addControl(new maplibregl.NavigationControl({visualizePitch:true}),"top-right");
+
+map.on("load",()=>{
+  map.setTerrain({source:"dem",exaggeration:1.45});
+
+  map.addSource("route",{type:"geojson",data:routeGeo});
+  map.addSource("routeProg",{type:"geojson",data:{type:"Feature",geometry:{type:"LineString",coordinates:[]}}});
+  map.addLayer({id:"route-casing",type:"line",source:"route",layout:{"line-cap":"round","line-join":"round"},
+    paint:{"line-color":"#0e1a17","line-width":7,"line-opacity":0.55}});
+  map.addLayer({id:"route-line",type:"line",source:"route",layout:{"line-cap":"round","line-join":"round"},
+    paint:{"line-color":"#f4efe6","line-width":2.6,"line-opacity":0.85,"line-dasharray":[2.2,1.8]}});
+  map.addLayer({id:"route-prog",type:"line",source:"routeProg",layout:{"line-cap":"round","line-join":"round"},
+    paint:{"line-color":"#e8a24a","line-width":4.5,"line-opacity":0.98}});
+
+  // start pin
+  addPin(TRIP.start.coords,"⌂","start",`<div class="pop"><b>Start: ${TRIP.start.name}</b><span>Load the car. Queue the playlist.</span></div>`);
+  // visited pins
+  STOPS.forEach(s=>{
+    addPin(s.coords,String(s.num),"",null,()=>openStop(s.id));
+  });
+  // bonus pins
+  BONUS.forEach(b=>{
+    addPin(b.coords,"★","bonus",null,()=>openBonus(b.id));
+  });
+  // eat pins (skip the one that's also stop 9)
+  EATS.filter(e=>!e.stopRef).forEach(e=>{
+    addPin(e.coords,"🍴","eat",`<div class="pop"><b>${e.name}</b><span>${e.place}</span></div>`);
+  });
+
+  fitRoute(0);
+});
+
+function addPin(coords,label,cls,popupHTML,onClick){
+  const el = document.createElement("div");
+  el.className = "pin "+cls; el.textContent = label;
+  const m = new maplibregl.Marker({element:el,anchor:"center"}).setLngLat(coords);
+  if(popupHTML) m.setPopup(new maplibregl.Popup({offset:20,closeButton:false}).setHTML(popupHTML));
+  m.addTo(map);
+  if(onClick) el.addEventListener("click",e=>{e.stopPropagation();onClick();});
+}
+function fitRoute(dur=1200){
+  const b = ROUTE_COORDS.reduce((bb,c)=>bb.extend(c),new maplibregl.LngLatBounds(ROUTE_COORDS[0],ROUTE_COORDS[0]));
+  const w = map.getContainer().clientWidth, h = map.getContainer().clientHeight;
+  const pad = w > 900
+    ? {top:70,bottom:60,left:340,right:80}
+    : {top:Math.min(60,h*.08),bottom:Math.min(50,h*.08),left:Math.min(40,w*.06),right:Math.min(40,w*.06)};
+  map.fitBounds(b,{padding:pad,pitch:0,bearing:0,duration:dur});
+}
+$("#resetBtn").addEventListener("click",()=>{stopFly();fitRoute();closePanel();});
+
+/* ---------- detail panel ---------- */
+function openStop(id){
+  const s = stopByld[id];
+  $("#panelBody").innerHTML = `
+    <div class="num">Stop ${s.num} of ${STOPS.length} · Road-tested</div>
+    <h3>${s.name}</h3><div class="place">${s.place}</div>
+    ${carouselHTML(s,"pn-")}
+    <div class="tagline">${s.tag}</div>
+    <p>${s.story}</p>
+    ${s.starfishGuide?`<div class="starbox"><h4>⭐ The Starfish Playbook</h4><ol>${s.starfishGuide.map(t=>`<li>${t}</li>`).join("")}</ol></div>`:""}
+    <ul class="tips">${s.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+  $("#panel").classList.add("open");
+}
+function openBonus(id){
+  const b = BONUS.find(x=>x.id===id);
+  $("#panelBody").innerHTML = `
+    <div class="num" style="color:var(--teal)">Bonus pick · ${b.pick==="ethan"?"From Ethan's list":"Added by the guide"}</div>
+    <h3>${b.name}</h3><div class="place">${b.place}</div>
+    <div class="tagline">${b.tag}</div>
+    ${b.unconfirmed?`<p style="color:var(--rose);font-weight:600">⚠ Exact spot still being confirmed — check with Ethan before routing here.</p>`:""}
+    <p>${b.desc}</p>
+    <ul class="tips">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+  $("#panel").classList.add("open");
+}
+function closePanel(){ $("#panel").classList.remove("open"); }
+
+function focusStop(id){
+  const s = stopByld[id];
+  document.getElementById("map-section").scrollIntoView({behavior:"smooth"});
+  setTimeout(()=>{stopFly();map.flyTo({center:s.coords,zoom:12.6,pitch:58,bearing:-18,duration:2600,essential:true});openStop(id);},450);
+}
+function focusBonus(id){
+  const b = BONUS.find(x=>x.id===id);
+  document.getElementById("map-section").scrollIntoView({behavior:"smooth"});
+  setTimeout(()=>{stopFly();map.flyTo({center:b.coords,zoom:12.4,pitch:58,bearing:14,duration:2600,essential:true});openBonus(id);},450);
+}
+
+/* ============================================================
+   Flyover — follows the real route, pauses at each stop
+============================================================ */
+let flying=false, flyRAF=null;
+const FLY_ZOOM=10.8, FLY_PITCH=62;
+const chip=$("#flyChip");
+
+function bearingBetween(a,b){
+  const toR=Math.PI/180,toD=180/Math.PI;
+  const y=Math.sin((b[0]-a[0])*toR)*Math.cos(b[1]*toR);
+  const x=Math.cos(a[1]*toR)*Math.sin(b[1]*toR)-Math.sin(a[1]*toR)*Math.cos(b[1]*toR)*Math.cos((b[0]-a[0])*toR);
+  return (Math.atan2(y,x)*toD+360)%360;
+}
+function lerpAngle(a,b,t){let d=((b-a+540)%360)-180;return (a+d*t+360)%360;}
+
+// waypoint meta in route order
+const FLY_STOPS = (()=>{
+  const meta=[{name:TRIP.start.name,place:"The starting line",idx:WAYPOINT_IDX[0]}];
+  const order=["taughannock","kaaterskill","splitrock","whiteface","ausable"];
+  order.forEach((id,i)=>{const s=stopByld[id];meta.push({name:`Stop ${s.num} — ${s.name}`,place:s.place,idx:WAYPOINT_IDX[i+1]});});
+  const bonusOrder=[["franconia",6],["kancamagus",7],["rattlesnake",8]];
+  bonusOrder.forEach(([id,wi])=>{const b=BONUS.find(x=>x.id===id);meta.push({name:`★ ${b.name}`,place:"Bonus pick — "+b.place,idx:WAYPOINT_IDX[wi]});});
+  meta.push({name:"🍴 Red's Eats",place:"Wiscasset — the lobster roll line",idx:WAYPOINT_IDX[10]});
+  const mb=BONUS.find(x=>x.id==="mtbattie");
+  meta.push({name:`★ ${mb.name}`,place:"Bonus pick — "+mb.place,idx:WAYPOINT_IDX[11]});
+  const lp=stopByld["lobsterpound"];meta.push({name:`Stop ${lp.num} — ${lp.name}`,place:lp.place,idx:WAYPOINT_IDX[12]});
+  const bh=stopByld["barharbor"];meta.push({name:`Stops 7 & 10 — Bar Harbor + Bar Island`,place:bh.place,idx:WAYPOINT_IDX[13]});
+  const cd=stopByld["cadillac"];meta.push({name:`Stop ${cd.num} — ${cd.name}`,place:cd.place,idx:WAYPOINT_IDX[14]});
+  const th=stopByld["thunderhole"];meta.push({name:`Stop ${th.num} — ${th.name}`,place:th.place,idx:WAYPOINT_IDX[15]});
+  meta.push({name:"🍴 Jordan Pond House",place:"Popovers. You've earned them.",idx:WAYPOINT_IDX[16]});
+  return meta;
+})();
+
+function showChip(name,place){$("#flyName").textContent=name;$("#flyPlace").textContent=place;chip.classList.add("show");}
+function hideChip(){chip.classList.remove("show");}
+
+function stopFly(){
+  flying=false;
+  if(flyRAF) cancelAnimationFrame(flyRAF);
+  hideChip();
+  $("#flyBtn").innerHTML='<span class="dot"></span> Fly the route';
+  map.getSource("routeProg") && map.getSource("routeProg").setData({type:"Feature",geometry:{type:"LineString",coordinates:[]}});
+}
+
+$("#flyBtn").addEventListener("click",()=>{ flying?stopFly():startFly(); });
+["mousedown","wheel","touchstart"].forEach(ev=>map.getCanvas().addEventListener(ev,()=>{if(flying)stopFly();},{passive:true}));
+
+function startFly(){
+  flying=true;closePanel();
+  $("#flyBtn").innerHTML='<span class="dot" style="background:var(--rose);box-shadow:0 0 10px var(--rose)"></span> Stop flyover';
+  let seg=0;
+  const SPEED=0.011; // route-points per ms baseline
+  const PAUSE=2100;
+  let curBearing=bearingBetween(ROUTE_COORDS[0],ROUTE_COORDS[8]);
+
+  function flySeg(){
+    if(!flying) return;
+    if(seg>=FLY_STOPS.length-1){ // done
+      showChip("You made it. 🦞","Acadia National Park — now go send this trip");
+      setTimeout(()=>{if(!flying)return;stopFly();fitRoute(2000);},2600);
+      flying=false;$("#flyBtn").innerHTML='<span class="dot"></span> Fly the route';
+      return;
+    }
+    const a=FLY_STOPS[seg].idx,b=FLY_STOPS[seg+1].idx,n=b-a;
+    const dur=Math.max(1600,n/SPEED/6);
+    const t0=performance.now();
+    showChip("Next: "+FLY_STOPS[seg+1].name,FLY_STOPS[seg+1].place);
+
+    function frame(now){
+      if(!flying)return;
+      let t=Math.min(1,(now-t0)/dur);
+      const e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2; // easeInOut
+      const fIdx=a+e*n, i=Math.floor(fIdx), f=fIdx-i;
+      const p0=ROUTE_COORDS[Math.min(i,ROUTE_COORDS.length-1)], p1=ROUTE_COORDS[Math.min(i+1,ROUTE_COORDS.length-1)];
+      const pos=[p0[0]+(p1[0]-p0[0])*f, p0[1]+(p1[1]-p0[1])*f];
+      const look=ROUTE_COORDS[Math.min(i+6,ROUTE_COORDS.length-1)];
+      curBearing=lerpAngle(curBearing,bearingBetween(pos,look),0.06);
+      map.jumpTo({center:pos,zoom:FLY_ZOOM,pitch:FLY_PITCH,bearing:curBearing});
+      map.getSource("routeProg").setData({type:"Feature",geometry:{type:"LineString",coordinates:ROUTE_COORDS.slice(0,i+1).concat([pos])}});
+      if(t<1){flyRAF=requestAnimationFrame(frame);}
+      else{
+        seg++;
+        showChip(FLY_STOPS[seg].name,FLY_STOPS[seg].place);
+        setTimeout(()=>{if(flying)flySeg();},PAUSE);
+      }
+    }
+    flyRAF=requestAnimationFrame(frame);
+  }
+  // swoop in to the start, then go
+  map.flyTo({center:ROUTE_COORDS[0],zoom:FLY_ZOOM,pitch:FLY_PITCH,bearing:curBearing,duration:2200,essential:true});
+  showChip(FLY_STOPS[0].name,FLY_STOPS[0].place);
+  setTimeout(()=>{if(flying)flySeg();},2400);
+}
+
+/* ============================================================
+   Scroll niceties
+============================================================ */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+window.addEventListener("scroll",()=>{$("#nav").classList.toggle("scrolled",scrollY>40);},{passive:true});
+</script>
+</body>
+</html>
