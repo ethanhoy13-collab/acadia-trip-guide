@@ -189,6 +189,12 @@ nav.scrolled{border-bottom-color:var(--line)}
 .bcard .tips{list-style:none;display:flex;flex-direction:column;gap:8px}
 .bcard .tips li{font-size:12.5px;color:var(--mute);padding-left:20px;position:relative}
 .bcard .tips li::before{content:"→";position:absolute;left:0;color:var(--teal)}
+.cardmedia{border-radius:12px;overflow:hidden;aspect-ratio:16/10;background:var(--ink3);margin:2px 0 2px}
+.cardmedia img{width:100%;height:100%;object-fit:cover;display:block}
+.cardmedia.two{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+.pcredit{font-size:10px;color:var(--mute);letter-spacing:.02em;margin-bottom:4px}
+.panelpic{border-radius:12px;overflow:hidden;margin:0 0 4px;background:var(--ink3)}
+.panelpic img{width:100%;display:block}
 
 /* ---------- eats ---------- */
 #eats{padding:100px 0}
@@ -357,7 +363,7 @@ footer{border-top:1px solid var(--line);padding:26px 24px;text-align:center;font
   </div>
 </section>
 
-<footer>Built with love (and one very good lobster roll) · Map data © OpenStreetMap · Imagery © Esri, Maxar, Earthstar Geographics · Terrain © Mapzen/AWS</footer>
+<footer>Built with love (and one very good lobster roll) · Map data © OpenStreetMap · Imagery © Esri, Maxar, Earthstar Geographics · Terrain © Mapzen/AWS · Bonus-stop &amp; restaurant photos by Wikimedia Commons and Flickr contributors, CC licenses as credited</footer>
 
 <script src="route.js"></script>
 <script src="data.js"></script>
@@ -442,6 +448,7 @@ $("#bonusCards").innerHTML = BONUS.map(b=>`
   <div class="bcard reveal">
     <span class="badge ${b.pick}">${b.pick==="ethan"?"Ethan's pick":"Guide's pick"}</span>
     ${b.unconfirmed?`<span class="badge warn">Exact spot TBC — ask Ethan</span>`:""}
+    ${b.pics&&b.pics.length?`<div class="cardmedia${b.pics.length>1?" two":""}">${b.pics.map(p=>`<img src="${p.f}" alt="${b.name}" loading="lazy">`).join("")}</div><div class="pcredit">${[...new Set(b.pics.map(p=>p.credit))].join(" · ")}</div>`:""}
     <h3>${b.name}</h3>
     <div class="place">${b.place}</div>
     <div class="tagline">${b.tag}</div>
@@ -454,6 +461,7 @@ $("#bonusCards").innerHTML = BONUS.map(b=>`
 $("#eatCards").innerHTML = EATS.map(e=>`
   <div class="ecard reveal">
     <span class="badge">${e.badge}</span>
+    ${e.pics&&e.pics.length?`<div class="cardmedia${e.pics.length>1?" two":""}">${e.pics.map(p=>`<img src="${p.f}" alt="${e.name}" loading="lazy">`).join("")}</div><div class="pcredit">${[...new Set(e.pics.map(p=>p.credit))].join(" · ")}</div>`:""}
     <h3>${e.name}</h3>
     <div class="place">${e.place}</div>
     <p>${e.desc}</p>
@@ -560,6 +568,7 @@ function openBonus(id){
     <h3>${b.name}</h3><div class="place">${b.place}</div>
     <div class="tagline">${b.tag}</div>
     ${b.unconfirmed?`<p style="color:var(--rose);font-weight:600">⚠ Exact spot still being confirmed — check with Ethan before routing here.</p>`:""}
+    ${(b.pics||[]).map(p=>`<div class="panelpic"><img src="${p.f}" alt="${b.name}" loading="lazy"></div><div class="pcredit">${p.credit}</div>`).join("")}
     <p>${b.desc}</p>
     <ul class="tips">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul>`;
   $("#panel").classList.add("open");
